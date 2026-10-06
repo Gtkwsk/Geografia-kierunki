@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #142033;
+  --color-parchment: #f4ead6;
+  --color-brass: #c9842a;
+  --color-moss: #16573a;
+  --color-brick: #9c332c;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100dvh;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    color: var(--color-parchment);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.map-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-parchment) 9%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-parchment) 9%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+}
+
+.wedge {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  transition: filter 0.16s;
+}
+
+.wedge:hover {
+  filter: brightness(1.12);
+}
+
+.mem-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: absolute;
+  inset: 0;
+}
+
+.mem-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.mem-face {
+  backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 0.75rem;
+}
+
+.mem-face.back {
+  transform: rotateY(180deg);
+}
+
+@keyframes roza-shake {
+  0%,
+  to {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-6px);
+  }
+  50% {
+    transform: translate(6px);
+  }
+  75% {
+    transform: translate(-3px);
+  }
+}
+
+@keyframes roza-pop {
+  0% {
+    transform: scale(0.96);
+  }
+  55% {
+    transform: scale(1.035);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes roza-float {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  18% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-26px);
+  }
+}
+
+@keyframes star-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-shake {
+  animation: 0.4s roza-shake;
+}
+
+.animate-pop {
+  animation: 0.4s roza-pop;
+}
+
+.animate-float {
+  animation: 0.9s forwards roza-float;
+}
+
+.star-pop {
+  animation: 0.45s both star-pop;
+}
+
+.star-pop:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.star-pop:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mem-inner,
+  .wedge {
+    transition: none;
+  }
+  .animate-shake,
+  .animate-pop,
+  .animate-float,
+  .star-pop {
+    animation: none;
+  }
+}
